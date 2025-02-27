@@ -3,7 +3,8 @@ import pyperclip
 import sys
 import io
 import time
-import argparse  # Added
+import argparse
+import subprocess  # Added
 
 class CommitMessage:
     def __init__(self, folder, chatmodel="Mistral"):
@@ -17,13 +18,17 @@ class CommitMessage:
         self.chatmodel = chatmodel
 
     def run(self, prompt, strings_to_find_in_win_titles=["Chrome"]):
-        STATUS_CMD = "git status --porcelain ."
-        DIFF_CMD = "git diff --no-color ."
-        #strings_to_find = ["Chrome", "Mistral"]
+        STATUS_CMD = ["git", "status", "--porcelain", "."]
+        DIFF_CMD = ["git", "diff", "--no-color", "."]
         DEBUG = True
-        status_txt = os.popen(STATUS_CMD).read()
-        diff_txt = os.popen(DIFF_CMD).read()
-       
+
+        # Use subprocess to capture output with correct encoding
+        status_result = subprocess.run(STATUS_CMD, capture_output=True, text=True, encoding='utf-8')
+        diff_result = subprocess.run(DIFF_CMD, capture_output=True, text=True, encoding='utf-8')
+
+        status_txt = status_result.stdout if status_result.stdout else ""
+        diff_txt = diff_result.stdout if diff_result.stdout else ""
+
         strings_to_find_in_win_titles.insert(0, self.chatmodel)
         
         prompt = f"""Here is the "git status" output:
