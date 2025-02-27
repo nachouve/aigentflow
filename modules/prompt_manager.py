@@ -148,10 +148,11 @@ def display_prompts():
         variable_values = st.session_state.variable_values
         content = prepare_prompt(st.session_state.prompt_content, variable_values, st.session_state.action, st.session_state.target_variable)
         st.info(content)
-        st.session_state.run_prompt = False
         
         if st.session_state.run_prompt and st.session_state.action_type == "Use as Input":
-            st.error("Action not implemented yet.")
+            st.error("Run as Action is not implemented yet.")
+        
+        st.session_state.run_prompt = False
             
     if st.session_state.show_form:
         display_prompt_form(st.session_state.edit_prompt)
