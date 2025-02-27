@@ -1,9 +1,9 @@
-# AIgentFlow
+# AigentFlow
 
 > ⚠️ **WARNING: EXPERIMENTAL PROJECT**  
 > This project is currently in experimental stage. Features may be unstable, APIs could change without notice, and there might be unexpected behavior. Use at your own risk.
 
-**AIgentFlow** is an intuitive desktop application designed for single users to effortlessly manage AI agents, execute function calls, and streamline prompt-based workflows. It offers the following features:
+**AigentFlow** is an intuitive desktop application designed for single users to effortlessly manage AI agents, execute function calls, and streamline prompt-based workflows. It offers the following features:
 
 - **File-based storage**: Uses JSON files stored in `.aigentflow_agent/prompts/`.
 - **Prompt Management**: Define new prompts with name, datetime, and content containing variables like `<variable1>`, `<variable2>`, etc.
@@ -14,7 +14,7 @@
 - **JSON Validation**: Ensures the integrity of JSON data.
 - **Shell and Python Execution**: Executes actions as shell commands and Python functions.
 - **Action Definition**: Actions have a name, description, and a launch sentence with `$1` as a placeholder for variables.
-- **User Interface**: Layout includes a left menu to select Prompts, Actions, or History, and a right panel for lists, forms, buttons, etc.
+- **User Interface**: Built with [Streamlit](https://streamlit.io/). Layout includes a left menu to select Prompts, Actions, or History, and a right panel for lists, forms, buttons, etc.
 
 ## Configuration and Running
 
@@ -43,12 +43,24 @@
 2. Implement your logic as a class or function that can be called by other modules.
 3. Ensure it handles necessary parameters (e.g., folder path, prompt text) for execution.
 
-## Creating Manually Actions
+## Creating Actions Manually
 
-You can use the AigentFlow interface to create actions (and prompts). But it is also possible
-to do it manually following these steps:
+You can use the AigentFlow interface to create actions (and prompts). Alternatively, you can create them manually:
 
 1. Add a new JSON file in the ".aigentflow_agent/actions/" folder. 
 2. The file must include a "name", "content", and (optionally) a "variables" list. 
 3. The "content" typically contains the command to run the agent, like "python agents\\agentname.py --someflag".
 4. Once created, open the UI, select your new action, fill in any variables, and click "Execute".
+
+## Resources
+
+- [Streamlit Documentation](https://docs.streamlit.io/)
+- [JSON Schema](https://json-schema.org/)
+
+## License
+
+MIT
+
+## Project Status
+
+This is an experimental project in active development. Contributions are welcome!
