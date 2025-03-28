@@ -14,6 +14,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+
+### USAGE: 
+#  python agents/smolagents_cli.py --model-type HfApiModel --model-id Qwen/Qwen2.5-Coder-32B-Instruct --tools web_search --verbosity-level 1
+#  python smolagents_cli.py "your prompt here" --model-type LiteLLMModel --model-id google/gemini-1.5-pro
+
+
 import argparse
 import os
 
@@ -22,8 +29,14 @@ from dotenv import load_dotenv
 from smolagents import CodeAgent, HfApiModel, LiteLLMModel, Model, OpenAIServerModel, Tool, TransformersModel
 from smolagents.default_tools import TOOL_MAPPING
 
+leopard_prompt = """Please tell me the layers available in this service endpoint: https://www.ign.es/wmts/pnoa-ma?"""
 
-leopard_prompt = "How many seconds would it take for a leopard at full speed to run through Pont des Arts?"
+sys_prompt = """
+You are a AI Agent expert in Geographic Information Systems (GIS).
+WMS, WFS, WMTS, etc. has no secrets for you.
+
+So you can help to inspect and request to that kind of services, getCapabilities, list layers, etc. and help to understand the data.
+"""
 
 
 def parse_arguments(description):
@@ -87,10 +100,16 @@ def load_model(model_type: str, model_id: str, api_base: str | None, api_key: st
             model_id=model_id,
         )
     elif model_type == "LiteLLMModel":
+        model_base_id = model_id.split("/")[0]
+        if model_base_id == "google" or model_base_id == "gemini":
+            import litellm
+            litellm._turn_on_debug()
+            api_key = api_key or os.getenv("GEMINI_API_KEY")
+            print(model_id, api_key)
         return LiteLLMModel(
             model_id=model_id,
             api_key=api_key,
-            api_base=api_base,
+            #api_base=api_base, # Leave the LiteLLMModel to determine the api_base
         )
     elif model_type == "TransformersModel":
         return TransformersModel(model_id=model_id, device_map="auto", flatten_messages_as_text=False)
