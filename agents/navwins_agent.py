@@ -1,8 +1,15 @@
 import platform
+import sys
 from abc import ABC, abstractmethod
 import logging
 
 import pyautogui
+
+# Configure console to use UTF-8 encoding
+if platform.system() == "Windows":
+    import os
+    os.system("chcp 65001 >nul")  # Set console to UTF-8 mode
+    sys.stdout.reconfigure(encoding='utf-8')
 
 logger = logging.getLogger(__name__)
 
@@ -93,6 +100,18 @@ def get_window_manager():
     else:
         raise NotImplementedError(f"Unsupported OS: {os_type}")
 
+def safe_print_title(index, title):
+    """Safely print window title regardless of special characters."""
+    try:
+        print(f"- [{index}]: {title}")
+    except UnicodeEncodeError:
+        # If we still have encoding issues, try to print as raw representation
+        try:
+            print(f"- [{index}]: {repr(title)}")
+        except:
+            print(f"- [{index}]: <Unprintable window title>")
+    except Exception as e:
+        print(f"- [{index}]: Error reading window title ({str(e)})")
 
 def go_down_and_click(window, down_num=20, pixel_from_bottom=100):
     try:
@@ -127,14 +146,7 @@ if __name__ == "__main__":
     if DEBUG:
         print("Open Windows:")
     for i, win_name in enumerate(manager.list_windows(), start=1):
-        try:
-            print(f"- [{i}]: {win_name}")
-        except UnicodeEncodeError:
-            print(f"- [{i}]: Error reading window title (UnicodeEncodeError)")
-        except Exception as e:
-            print(f"- [{i}]: Error reading window title ({e})")
-            
-        #print(f"- {i}")
+        safe_print_title(i, win_name)
    
     if DEBUG: print(f"Let's activate a window with titles containing {strings_to_find}") 
     success, window = manager.activate_window(title_must_contain=strings_to_find)
