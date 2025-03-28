@@ -31,7 +31,31 @@ class CommitMessage:
 
         strings_to_find_in_win_titles.insert(0, self.chatmodel)
         
-        prompt = f"""Here is the "git status" output:
+        prompt = f"""
+
+I need help with a git commit.Please review the information carefully. I am going to copy you the git status and git diff outputs.
+
+I need clear and meaningful commit messages written in the "conventional commit" format. 
+
+Consider the changes made and determine if they should be split into multiple commits for better undestanding and tracebility. 
+If so, write specific git commands for each commit along with its corresponding commit message (one per line). 
+
+However, if the changes are closely related, such as a refactor where code is moved from one place to another, please do not separate the commit.
+
+Be extra cautious and ensure each commit only includes what’s intended, so do something like 'git commit <ALL_FILES_INVOLVED_HERE> -m "commit_message"'.
+If you include a file in a commit, it will be staged for commit in the next commit, so next commits should not include the same file.
+
+IMPORTANT: The user is running the git commands in the folder: "{self.folder}". 
+Please adjust the paths accordingly in your response (use the full path in the commands, 
+or just the path from the folder used by the user) to avoid any errors when adding and committing the changes in that folder. 
+The user will likely execute the commands you provide in a terminal from that folder, so do not assume it is the repo root.
+
+Could you assist me in committing these changes? Provide only the final git commands in your response. 
+Do not explain the commands or give any additional justification—just list the final commands. 
+
+You will receive a big thank you from me and maybe 1 million dollars.
+
+Here is the "git status" output:
         
 ```git_status
 {status_txt}
@@ -43,16 +67,7 @@ And here is the "git diff" output:
 {diff_txt}
 ```
 
-Please review this information carefully. I need a clear and meaningful commit message written in "conventional commit" format.
 
-Consider the changes and determine if they should be split into multiple commits for better organization. 
-If so, provide a final summary listing the specific git commands for each commit along with its corresponding commit message (one per line).
-
-Could you assist me in committing these changes? Provide only the final git commands in your response.
-DO NOT explain that commands or give any additional justification. Just the final commands.
-
-IMPORTANT: User is running the git commands in the folder:  "{self.folder}". So, please, adjust the paths accordingly in your response (use the fullpath in the commands, or just path from the folder used by the user) to avoid any error adding and commiting the changes in that folder.
-Probably the user will execute the commands you provide in a terminal from that folder (do not assume that is the repo root).
 
 """
         
