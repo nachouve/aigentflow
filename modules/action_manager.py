@@ -54,6 +54,8 @@ def execute_action(action_name, content, variable_values):
     try:
         modified_content = content
         for var_name, var_value in variable_values.items():
+            # Replace " for ' to avoid issues with shell commands
+            var_value = var_value.replace('"', "'")
             modified_content = modified_content.replace(f"<{var_name}>", str(var_value))
         
         # Execute the command
@@ -217,8 +219,8 @@ def display_actions():
     initialize_session_state()
 
     if st.session_state.run_action:
-        st.error(f"Debug: Form submit flag is {st.session_state.execute_submit}")
-        st.error(f"Action content: {st.session_state.action_content}")
+        st.info(f"Debug: Form submit flag is {st.session_state.execute_submit}")
+        st.info(f"Action content: {st.session_state.action_content}")
         variable_values = {key[4:]: st.session_state[key] for key in st.session_state.keys() if key.startswith("var_")}
         execute_action(st.session_state.action_name, st.session_state.action_content, variable_values)
         st.session_state.run_action = False 
