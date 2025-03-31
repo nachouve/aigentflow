@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aigentflow"
+version = "0.1.0"
+description = "AI agent workflow management"
+authors = [
+    {name = "Author", email = "nachouve@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"  # Changed from a table to a string
+classifiers = [
+    "Programming Language :: Python :: 3",
+    # Removed the License classifier to avoid warnings
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "colorama==0.4.6",
+    "numpy==1.26.4",
+    "pandas==2.2.3",
+    "pyautogui==0.9.54",
+    "pyperclip==1.9.0",
+    "python-dotenv==1.1.0",
+    "rich==14.0.0",
+    "smolagents==1.12.0",
+    "streamlit==1.44.0",
+    "tqdm==4.67.1",
+    "paddlepaddle-gpu",
+    "paddleocr>=2.10.0",
+    "opencv-python>=4.11.0.86",
+    "mss>=10.0.0",
+]
+
+[tool.setuptools]
+packages = ["aigentflow"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "ruff>=0.1.0",
+]
+
+[tool.ruff]
+# Enable Pyflakes ('F'), pycodestyle ('E'), isort ('I') 
+# and many more - up to 700 rules enabled
+select = ["E", "F", "I", "B", "W"]
+line-length = 88
+target-version = "py38"
+fix = true
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
