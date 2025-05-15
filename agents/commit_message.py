@@ -1,15 +1,17 @@
-import os
-import pyperclip
-import sys
-import io
-import time
 import argparse
+import io
+import os
 import subprocess  # Added
+import sys
+import time
+
+import pyperclip
+
 
 class CommitMessage:
     def __init__(self, folder, chatmodel="Mistral"):
         self.name = "CommitMessage"
-        
+
         if os.path.isdir(folder):
             os.chdir(folder)
             self.folder = folder
@@ -23,14 +25,18 @@ class CommitMessage:
         DEBUG = True
 
         # Use subprocess to capture output with correct encoding
-        status_result = subprocess.run(STATUS_CMD, capture_output=True, text=True, encoding='utf-8')
-        diff_result = subprocess.run(DIFF_CMD, capture_output=True, text=True, encoding='utf-8')
+        status_result = subprocess.run(
+            STATUS_CMD, capture_output=True, text=True, encoding="utf-8"
+        )
+        diff_result = subprocess.run(
+            DIFF_CMD, capture_output=True, text=True, encoding="utf-8"
+        )
 
         status_txt = status_result.stdout if status_result.stdout else ""
         diff_txt = diff_result.stdout if diff_result.stdout else ""
 
         strings_to_find_in_win_titles.insert(0, self.chatmodel)
-        
+
         prompt = f"""
 
 I need help with a git commit.Please review the information carefully. I am going to copy you the git status and git diff outputs.
@@ -70,15 +76,15 @@ And here is the "git diff" output:
 
 
 """
-        
+
         if len(diff_txt) == 0:
             return "No changes to commit."
-        
+
         import navwins_agent as nw
         import pyautogui
-        
+
         manager = nw.get_window_manager()
-        
+
         # Use a safer approach to list windows
         def safe_print(text, fallback="[Content cannot be displayed]"):
             try:
@@ -92,54 +98,62 @@ And here is the "git diff" output:
             except (UnicodeEncodeError, UnicodeDecodeError):
                 print(fallback)
                 return False
-        
+
         # List all windows with better error handling
         print("Available windows:")
         window_list = manager.list_windows()
         for i, window_title in enumerate(window_list):
             safe_print(f"[{i}]: {window_title}\n")
-        
-        success, window = manager.activate_window(title_must_contain=strings_to_find_in_win_titles)
+
+        success, window = manager.activate_window(
+            title_must_contain=strings_to_find_in_win_titles
+        )
         if not success:
             # Try multiple search strings for better results
             for search_terms in [strings_to_find_in_win_titles]:
-                if DEBUG: print(f"Trying to find window with: {search_terms}")
-                success, window = manager.activate_window(title_must_contain=search_terms)
+                if DEBUG:
+                    print(f"Trying to find window with: {search_terms}")
+                success, window = manager.activate_window(
+                    title_must_contain=search_terms
+                )
                 if success:
                     break
-        
-        if DEBUG: print(f"Window activated: {success}")
-        
+
+        if DEBUG:
+            print(f"Window activated: {success}")
+
         if success:
             # Give window time to focus
             time.sleep(0.3)
             nw.go_down_and_click(window)
-            
+
             # For large diffs, use more reliable chunking
-            chunk_size = 2000  # Smaller chunks for better reliability
+            chunk_size = 5000  # Smaller chunks for better reliability
             total_pasted = 0
-            
+
             try:
                 # Clear any existing text
-                pyautogui.hotkey('ctrl', 'a')
+                pyautogui.hotkey("ctrl", "a")
                 time.sleep(0.1)
-                pyautogui.press('delete')
+                pyautogui.press("delete")
                 time.sleep(0.1)
-                
+
                 for i in range(0, len(prompt), chunk_size):
-                    chunk = prompt[i:i+chunk_size]
+                    chunk = prompt[i : i + chunk_size]
                     pyperclip.copy(chunk)
-                    pyautogui.hotkey('ctrl', 'v')
+                    pyautogui.hotkey("ctrl", "v")
                     total_pasted += len(chunk)
                     # More delay for longer chunks
                     time.sleep(0.3)
-                    
+
                     # Periodically check if we need to scroll down
                     if i > 0 and i % 10000 == 0:
-                        pyautogui.press('pagedown')
+                        pyautogui.press("pagedown")
                         time.sleep(0.2)
-                
-                return f"\nSuccessfully copied **{total_pasted} characters** to window.\n"
+
+                return (
+                    f"\nSuccessfully copied **{total_pasted} characters** to window.\n"
+                )
             except Exception as e:
                 return f"Error while pasting text: {str(e)}"
         else:
@@ -156,6 +170,7 @@ if __name__ == "__main__":
     if not folder:
         import tkinter as tk
         from tkinter import filedialog
+
         root = tk.Tk()
         root.withdraw()
         folder = filedialog.askdirectory()

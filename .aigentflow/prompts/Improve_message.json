@@ -1,0 +1,1 @@
+{"name": "Improve message", "content": "Please, take a look to the next message. Fix grammar errors and improve the content to better undertanding in a professional but not in very formal way. \n\n\"\"\"\n<message>\n\"\"\"", "variables": [{"name": "message", "type": "text", "default": "Est\u00e1 todo mal. Muy mal."}]}

@@ -1,0 +1,1 @@
+{"name": "Run In LLM Chat", "content": "python agents\\run_in_llm_chat.py  --prompt \"<prompt>\" --chatmodel <chatmodel>", "variables": [{"name": "prompt", "type": "text", "default": ""}, {"name": "chatmodel", "type": "options", "default": "Deepseek", "options": ["Mistral", "ChatGPT", "Grok", "Deepseek"]}]}

@@ -72,6 +72,11 @@ class ScreenOCR:
 
     def search_text(self, keyword):
         """Finds the bounding box of the first occurrence of the keyword."""
+        
+        if not self.text_bboxes:
+            print("No text detected. Running extract_text() first.")
+            self.extract_text()
+        
         for (x1, y1, x2, y2), text in self.text_bboxes:
             if keyword.lower() in text.lower():
                 return (x1, y1, x2, y2)

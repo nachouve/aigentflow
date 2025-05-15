@@ -1,0 +1,1 @@
+{"name": "Random num", "content": "python agents/random_number.py <max_number>", "variables": [{"name": "max_number", "type": "number", "default": "25"}]}

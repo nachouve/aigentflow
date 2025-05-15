@@ -1,0 +1,1 @@
+{"name": "Generic Agent", "content": "python agents\\smolagents_cli.py \"<prompt>\" --model-type LiteLLMModel --model-id google/gemini-1.5-pro", "variables": [{"name": "prompt", "type": "text", "default": "What time is it in Santiago de Compostela? And, I am interesting in which hours it will rain today. "}]}

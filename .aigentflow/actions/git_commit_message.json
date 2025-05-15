@@ -1,0 +1,1 @@
+{"name": "git commit message", "content": "python agents\\commit_message.py  --chatmodel <LLM>", "variables": [{"name": "LLM", "type": "options", "default": "Deepseek", "options": ["Mistral", "ChatGPT", "Grok", "Deepseek"]}]}

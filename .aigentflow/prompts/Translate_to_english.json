@@ -1,0 +1,1 @@
+{"name": "Translate to english", "content": "Translate to english the next message:\n\n\"\"\"\n<message>  --- <borrar_num>\n\"\"\"", "variables": [{"name": "message", "type": "text", "default": "hello world"}, {"name": "borrar_num", "type": "number", "default": "-1"}]}
