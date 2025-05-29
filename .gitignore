@@ -1,3 +1,8 @@
+assets/external/
+.web
+*.py[cod]
+.states
+*.db
 .aider*
 .env
 *.pyc
