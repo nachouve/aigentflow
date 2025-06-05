@@ -128,7 +128,7 @@ And here is the "git diff" output:
             nw.go_down_and_click(window)
 
             # For large diffs, use more reliable chunking
-            chunk_size = 5000  # Smaller chunks for better reliability
+            chunk_size = 7500  # Smaller chunks for better reliability
             total_pasted = 0
 
             try:
@@ -147,7 +147,7 @@ And here is the "git diff" output:
                     time.sleep(0.3)
 
                     # Periodically check if we need to scroll down
-                    if i > 0 and i % 10000 == 0:
+                    if i > 0 and i % 100 == 0:
                         pyautogui.press("pagedown")
                         time.sleep(0.2)
 
