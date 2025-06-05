@@ -5,13 +5,10 @@ from typing import Dict, List, Optional
 
 import reflex as rx
 
-# (Keep .aigentflow at the root, so paths will be relative from there)
-ACTION_DIR = Path(".aigentflow/actions")
-# PROMPT_DIR = Path(".aigentflow/prompts") # Will be used later
-# HISTORY_DIR = Path(".aigentflow/history") # Will be used later
-PROMPT_DIR = Path(".aigentflow/prompts")
-HISTORY_DIR = Path(".aigentflow/history")
-# These paths will be used later when implementing file I/O logic.
+# Point to the .aigentflow directory in the root project folder (one level up)
+ACTION_DIR = Path("../.aigentflow/actions")
+PROMPT_DIR = Path("../.aigentflow/prompts")
+HISTORY_DIR = Path("../.aigentflow/history")
 
 
 class Variable(rx.Base):
